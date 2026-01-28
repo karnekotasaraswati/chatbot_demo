@@ -47,6 +47,19 @@
 
 
 
+from llama_cpp import Llama
+
+MODEL_PATH = "./models/model.gguf"
+
+# Initialize model ONCE (IMPORTANT)
+llm = Llama(
+    model_path=MODEL_PATH,
+    n_ctx=2048,
+    n_threads=2,
+    n_batch=64,
+    verbose=False
+)
+
 def generate_response(prompt: str):
     try:
         result = llm(
@@ -59,8 +72,6 @@ def generate_response(prompt: str):
         )
 
         text = result["choices"][0]["text"]
-
-        # CLEAN OUTPUT
         return text.strip()
 
     except Exception as e:
