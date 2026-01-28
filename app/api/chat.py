@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 from pydantic import BaseModel
 from app.services.llm_service import generate_response
-# from app.services.retrieval_service import search_context
+    # from app.services.retrieval_service import search_context
 
 router = APIRouter()
 
