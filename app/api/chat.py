@@ -43,5 +43,6 @@ Question:
 """
 
     answer = generate_response(prompt)
+    print(answer)
 
     return {"answer": answer}

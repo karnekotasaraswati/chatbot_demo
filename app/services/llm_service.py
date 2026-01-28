@@ -26,9 +26,9 @@ MODEL_PATH = "./models/model.gguf"
 
 llm = Llama(
     model_path=MODEL_PATH,
-    n_ctx=512,
+    n_ctx=256,
     n_threads=1,
-    n_batch=16,
+    n_batch=8,
     verbose=False
 )
 
@@ -36,7 +36,7 @@ def generate_response(prompt: str):
     try:
         result = llm(
             prompt,
-            max_tokens=80,
+            max_tokens=40,
             temperature=0.6
         )
 
