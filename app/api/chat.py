@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 from pydantic import BaseModel
 from app.services.llm_service import generate_response
-from app.services.retrieval_service import search_context
+# from app.services.retrieval_service import search_context
 
 router = APIRouter()
 
@@ -12,8 +12,8 @@ class ChatRequest(BaseModel):
 async def chat_bot(request: ChatRequest):
 
 
-    context = search_context(request.question)
-    print("Retrieved Context:", context)
+    # context = search_context(request.question)
+    # print("Retrieved Context:", context)
 
     prompt = f"""
 You are StarZopp AI Assistant.
@@ -21,8 +21,8 @@ You are StarZopp AI Assistant.
 Answer ONLY using this context.
 If answer is not found say: I don't know.
 
-Context:
-{context}
+# Context:
+# {context}
 
 Question:
 {request.question}
