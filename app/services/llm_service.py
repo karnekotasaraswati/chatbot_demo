@@ -67,15 +67,10 @@ def generate_response(prompt: str):
             temperature=0.2,
             top_p=0.9,
             repeat_penalty=1.2,
-            stop=["### User:", "### Assistant:", "</s>"]
+            stop=["</s>", "<|user|>"]
         )
 
         return result["choices"][0]["text"].strip()
 
     except Exception as e:
         return f"Model error: {str(e)}"
-
-
-
-
-
