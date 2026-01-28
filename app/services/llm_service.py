@@ -47,7 +47,7 @@
 
 
 
-ffrom llama_cpp import Llama
+from llama_cpp import Llama
 
 MODEL_PATH = "./models/model.gguf"
 
