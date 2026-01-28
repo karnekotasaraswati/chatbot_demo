@@ -1,7 +1,4 @@
 fastapi
 uvicorn
 llama-cpp-python==0.2.90
-faiss-cpu
-sentence-transformers
-numpy
 python-dotenv
