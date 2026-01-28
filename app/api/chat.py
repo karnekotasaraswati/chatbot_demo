@@ -32,16 +32,25 @@
 #     print(answer)
 #     return {"answer": answer}
 
-
 from fastapi import APIRouter
 from pydantic import BaseModel
 from app.services.llm_service import generate_response
 
 router = APIRouter()
 
+
+# Health check endpoint (for Render & monitoring)
+@router.get("/health")
+def health_check():
+    return {"status": "StarZopp API running"}
+
+
+# Request schema
 class ChatRequest(BaseModel):
     question: str
 
+
+# Chat endpoint
 @router.post("/chat")
 async def chat_bot(request: ChatRequest):
 
@@ -53,4 +62,8 @@ Question:
 """
 
     answer = generate_response(prompt)
-    return {"answer": answer}
+
+    return {
+        "question": request.question,
+        "answer": answer
+    }
