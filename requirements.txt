@@ -3,4 +3,6 @@ uvicorn
 llama-cpp-python==0.2.90
 python-dotenv
 faiss-cpu
+sentence-transformers
+
 # pydantic
