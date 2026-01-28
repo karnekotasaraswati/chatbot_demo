@@ -47,18 +47,20 @@
 
 
 
-from llama_cpp import Llama
+ffrom llama_cpp import Llama
 
 MODEL_PATH = "./models/model.gguf"
 
-# Initialize model ONCE (IMPORTANT)
+print("Loading LLM model...")
+
 llm = Llama(
     model_path=MODEL_PATH,
     n_ctx=2048,
     n_threads=2,
-    n_batch=64,
     verbose=False
 )
+
+print("LLM loaded successfully")
 
 def generate_response(prompt: str):
     try:
@@ -66,13 +68,11 @@ def generate_response(prompt: str):
             prompt,
             max_tokens=120,
             temperature=0.2,
-            top_p=0.9,
             repeat_penalty=1.2,
-            stop=["User Question:", "Context:", "Final Answer:"]
+            stop=["Final Answer:", "User Question:"]
         )
 
-        text = result["choices"][0]["text"]
-        return text.strip()
+        return result["choices"][0]["text"].strip()
 
     except Exception as e:
         return f"Model error: {str(e)}"
