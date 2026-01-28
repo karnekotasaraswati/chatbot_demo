@@ -53,8 +53,8 @@ MODEL_PATH = "./models/model.gguf"
 
 llm = Llama(
     model_path=MODEL_PATH,
-    n_ctx=2048,       # More memory for better answers
-    n_threads=2,      # Safe for Render free tier
+    n_ctx=2048,
+    n_threads=2,
     n_batch=64,
     verbose=False
 )
@@ -63,18 +63,18 @@ def generate_response(prompt: str):
     try:
         result = llm(
             prompt,
-            max_tokens=256,
-            temperature=0.3,
+            max_tokens=120,
+            temperature=0.2,
             top_p=0.9,
             repeat_penalty=1.2,
-            stop=["User:", "Assistant:", "</s>"]
+            stop=["### User:", "### Assistant:", "</s>"]
         )
 
-        text = result["choices"][0]["text"]
-        return text.strip()
+        return result["choices"][0]["text"].strip()
 
     except Exception as e:
         return f"Model error: {str(e)}"
+
 
 
 
