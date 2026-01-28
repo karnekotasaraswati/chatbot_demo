@@ -47,18 +47,6 @@
 
 
 
-from llama_cpp import Llama
-
-MODEL_PATH = "./models/model.gguf"
-
-llm = Llama(
-    model_path=MODEL_PATH,
-    n_ctx=2048,
-    n_threads=2,
-    n_batch=64,
-    verbose=False
-)
-
 def generate_response(prompt: str):
     try:
         result = llm(
@@ -67,10 +55,13 @@ def generate_response(prompt: str):
             temperature=0.2,
             top_p=0.9,
             repeat_penalty=1.2,
-            stop=["</s>", "<|user|>"]
+            stop=["User Question:", "Context:", "Final Answer:"]
         )
 
-        return result["choices"][0]["text"].strip()
+        text = result["choices"][0]["text"]
+
+        # CLEAN OUTPUT
+        return text.strip()
 
     except Exception as e:
         return f"Model error: {str(e)}"
