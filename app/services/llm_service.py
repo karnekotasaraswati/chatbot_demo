@@ -51,19 +51,20 @@ from llama_cpp import Llama
 
 MODEL_PATH = "./models/model.gguf"
 
-_llm = None   # private global variable
+_llm = None  # global cache
 
 
 def load_llm():
     global _llm
 
     if _llm is None:
-        print("Loading LLM model...")
+        print("Loading LLM model (Low memory mode)...")
 
         _llm = Llama(
             model_path=MODEL_PATH,
-            n_ctx=2048,
-            n_threads=2,
+            n_ctx=1024,     # reduced context size (low RAM)
+            n_threads=1,    # single thread (Render CPU safe)
+            n_batch=64,     # small batch to reduce memory
             verbose=False
         )
 
@@ -74,14 +75,14 @@ def load_llm():
 
 def generate_response(prompt: str):
     try:
-        llm = load_llm()   # always guaranteed
+        llm = load_llm()
 
         result = llm(
             prompt,
             max_tokens=120,
-            temperature=0.2,
-            repeat_penalty=1.2,
-            stop=["Final Answer:", "User Question:"]
+            temperature=0.3,
+            repeat_penalty=1.1,
+            stop=["User:", "Assistant:"]
         )
 
         return result["choices"][0]["text"].strip()
