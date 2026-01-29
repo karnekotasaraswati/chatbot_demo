@@ -51,19 +51,31 @@ from llama_cpp import Llama
 
 MODEL_PATH = "./models/model.gguf"
 
-print("Loading LLM model...")
+_llm = None   # private global variable
 
-llm = Llama(
-    model_path=MODEL_PATH,
-    n_ctx=2048,
-    n_threads=2,
-    verbose=False
-)
 
-print("LLM loaded successfully")
+def load_llm():
+    global _llm
+
+    if _llm is None:
+        print("Loading LLM model...")
+
+        _llm = Llama(
+            model_path=MODEL_PATH,
+            n_ctx=2048,
+            n_threads=2,
+            verbose=False
+        )
+
+        print("LLM loaded successfully")
+
+    return _llm
+
 
 def generate_response(prompt: str):
     try:
+        llm = load_llm()   # always guaranteed
+
         result = llm(
             prompt,
             max_tokens=120,
