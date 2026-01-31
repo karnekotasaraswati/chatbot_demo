@@ -49,6 +49,7 @@
 
 
 from fastapi import APIRouter
+from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 from app.services.llm_service import generate_response
 from app.services.retrieval_service import search_context
@@ -61,23 +62,28 @@ class ChatRequest(BaseModel):
 @router.post("/chat")
 async def chat_bot(request: ChatRequest):
 
+    
+    # Check for greetings
+    greetings = ["hi", "hello", "hey", "greetings", "hi there", "hello there"]
+    if request.question.strip().lower() in greetings:
+        async def greeting_generator():
+            yield "Hello! Welcome to StarZopp. How can I assist you today?"
+        return StreamingResponse(greeting_generator(), media_type="text/plain")
+
     context = search_context(request.question)
+    print(f"DEBUG: Retrieved Context for '{request.question}':\n{context}\n---\n")
 
-    prompt = f"""
-You are StarZopp AI Assistant.
-
-Use ONLY the context below to answer.
-If answer is not found, say: I don't know.
-
+    prompt = f"""Instruct: You are StarZopp AI Assistant.
 Context:
 {context}
 
-Question:
-{request.question}
+User Question: {request.question}
 
-Answer:
-"""
+Answer the question simply and concisely using the Context.
+- Keep it to 1-2 sentences.
+- Do not add unnecessary details.
 
-    answer = generate_response(prompt)
+Response:"""
 
-    return {"answer": answer}
+    # Return streaming response
+    return StreamingResponse(generate_response(prompt), media_type="text/plain")

@@ -30,11 +30,15 @@ def create_vector_store():
 
     return index
 
+index = None
+
 def load_vector_store():
+    # Always load documents so we have the text mapping
+    load_documents()
+    
     if os.path.exists(VECTOR_PATH):
         return faiss.read_index(VECTOR_PATH)
     else:
-        load_documents()
         return create_vector_store()
 
 index = load_vector_store()

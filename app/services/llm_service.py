@@ -49,7 +49,7 @@
 
 from llama_cpp import Llama
 
-MODEL_PATH = "./models/model.gguf"
+MODEL_PATH = "./models/phi-2.Q4_K_M.gguf"
 
 _llm = None  # global cache
 
@@ -62,9 +62,9 @@ def load_llm():
 
         _llm = Llama(
             model_path=MODEL_PATH,
-            n_ctx=1024,     # reduced context size (low RAM)
-            n_threads=1,    # single thread (Render CPU safe)
-            n_batch=64,     # small batch to reduce memory
+            n_ctx=2048,     # reduced context size (low RAM)
+            n_threads=6,    # single thread (Render CPU safe)
+            n_batch=512,     # small batch to reduce memory
             verbose=False
         )
 
@@ -77,15 +77,17 @@ def generate_response(prompt: str):
     try:
         llm = load_llm()
 
-        result = llm(
+        stream = llm(
             prompt,
             max_tokens=120,
             temperature=0.3,
             repeat_penalty=1.1,
-            stop=["User:", "Assistant:"]
+            stop=["User:", "Assistant:", "User Question:", "Context:", "Instruct:", "\nUser", "\nContext"],
+            stream=True
         )
 
-        return result["choices"][0]["text"].strip()
+        for output in stream:
+            yield output["choices"][0]["text"]
 
     except Exception as e:
-        return f"Model error: {str(e)}"
+        yield f"Model error: {str(e)}"
