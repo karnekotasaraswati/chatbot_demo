@@ -3,9 +3,9 @@ import urllib.request
 import sys
 
 # URL for Phi-2 GGUF
-MODEL_URL = "https://huggingface.co/TheBloke/phi-2-GGUF/resolve/main/phi-2.Q4_K_M.gguf"
+MODEL_URL = "https://huggingface.co/TheBloke/phi-2-GGUF/resolve/main/phi-2.Q4_K_S.gguf"
 MODEL_DIR = "models"
-MODEL_PATH = os.path.join(MODEL_DIR, "phi-2.Q4_K_M.gguf")
+MODEL_PATH = os.path.join(MODEL_DIR, "phi-2.Q4_K_S.gguf")
 
 def download_model():
     if not os.path.exists(MODEL_DIR):

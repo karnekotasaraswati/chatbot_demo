@@ -49,7 +49,7 @@
 
 from llama_cpp import Llama
 
-MODEL_PATH = "./models/phi-2.Q4_K_M.gguf"
+MODEL_PATH = "./models/tinyllama-1.1b-chat-v1.0.Q4_K_M.gguf"
 
 _llm = None  # global cache
 
